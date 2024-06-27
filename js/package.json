@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@vueuse/integrations": "^10.9.0",
+    "qrcode": "^1.5.3"
+  }
+}

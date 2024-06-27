@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR jProject</title>
+    <script src="script.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="qrcode.min.js"></script>
+    <style>
+        #products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .product {
+            border: 1px solid #888;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .column {
+            display: flex;
+            gap: 8px;
+        }
+
+        .qrcode {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #888;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="title">Products</h1>
+        <div id="products"></div>
+    </div>
+    <script>
+        const prod = document.getElementById('products')
+        fetch('https://dummyjson.com/products')
+            .then(res => res.json())
+            .then(data=>{
+                data.products.map((row, index)=>{
+                    const qr = document.createElement('div')
+                    const col = document.createElement('div')
+                    const details = document.createElement('div')
+                    const card = document.createElement('div')
+                    const h2 = document.createElement('h2')
+                    const h3 = document.createElement('h3')
+
+                    col.classList.add('column')
+                    details.classList.add('details')
+                    qr.classList.add('qrcode')
+                    qr.id = 'qrcode' + index;
+                    card.classList.add('product')
+                    h2.innerText = row.title
+                    h3.innerText = row.price
+
+
+                    details.append(h2)
+                    details.append(h3)
+
+                    col.append(qr)
+                    col.append(details)
+                    
+                    card.append(col)
+
+                    prod.append(card)
+                },)
+
+                const qrCodeSize = 100;
+
+                data.products.forEach((product, index) => {
+                    new QRCode(document.getElementById('qrcode' + index), {
+                        text: product.title,
+                        width: qrCodeSize,
+                        height: qrCodeSize
+                    });
+                });
+            });
+
+            
+    </script>
+</body>
+</html>
